@@ -1,0 +1,52 @@
+{
+  "investment_total": 1170.0,
+  "financing_term_years": 30,
+  "annual_debt_service": 66.0,
+  "scenarios": [
+    {
+      "id": "conservative",
+      "name": "Conservative Scenario",
+      "additional_annual_revenue": 185.0,
+      "net_annual_impact": 119.0,
+      "payback_years": 14.5,
+      "npv_30yr": 850.0,
+      "breakdown": {
+        "vip_hospitality": 65.0,
+        "concerts_and_events": 50.0,
+        "museum_and_tours": 35.0,
+        "nfl_and_sports": 20.0,
+        "retail_and_catering": 15.0
+      }
+    },
+    {
+      "id": "base",
+      "name": "Base Scenario",
+      "additional_annual_revenue": 260.0,
+      "net_annual_impact": 194.0,
+      "payback_years": 9.8,
+      "npv_30yr": 1620.0,
+      "breakdown": {
+        "vip_hospitality": 95.0,
+        "concerts_and_events": 75.0,
+        "museum_and_tours": 45.0,
+        "nfl_and_sports": 25.0,
+        "retail_and_catering": 20.0
+      }
+    },
+    {
+      "id": "optimistic",
+      "name": "Optimistic Scenario",
+      "additional_annual_revenue": 340.0,
+      "net_annual_impact": 274.0,
+      "payback_years": 7.2,
+      "npv_30yr": 2450.0,
+      "breakdown": {
+        "vip_hospitality": 125.0,
+        "concerts_and_events": 105.0,
+        "museum_and_tours": 55.0,
+        "nfl_and_sports": 30.0,
+        "retail_and_catering": 25.0
+      }
+    }
+  ]
+}

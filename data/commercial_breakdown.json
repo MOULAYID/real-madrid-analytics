@@ -1,0 +1,32 @@
+[
+  {
+    "season": "2024/25",
+    "adidas_kit_supplier": 120.0,
+    "emirates_main_sponsor": 70.0,
+    "hp_sleeve_sponsor": 70.0,
+    "global_partners": 135.0,
+    "retail_merchandise": 115.0,
+    "tours_exhibition": 32.0,
+    "total_commercial": 542.0
+  },
+  {
+    "season": "2023/24",
+    "adidas_kit_supplier": 115.0,
+    "emirates_main_sponsor": 70.0,
+    "hp_sleeve_sponsor": 50.0,
+    "global_partners": 125.0,
+    "retail_merchandise": 97.0,
+    "tours_exhibition": 25.0,
+    "total_commercial": 482.0
+  },
+  {
+    "season": "2022/23",
+    "adidas_kit_supplier": 110.0,
+    "emirates_main_sponsor": 70.0,
+    "hp_sleeve_sponsor": 0.0,
+    "global_partners": 115.0,
+    "retail_merchandise": 88.0,
+    "tours_exhibition": 20.0,
+    "total_commercial": 403.0
+  }
+]

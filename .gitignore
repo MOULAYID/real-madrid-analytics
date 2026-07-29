@@ -1,0 +1,22 @@
+# Node / React
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Python / Virtual Environment
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+*.sqlite3-journal
+
+# Environment / Local Secrets
+.env
+.env.local
+
+# IDE & System Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
