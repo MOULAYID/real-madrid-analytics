@@ -29,13 +29,16 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="header">
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div style={{
-          width: '42px', height: '42px', borderRadius: '50%', background: 'linear-gradient(135deg, #1e3a8a, #d97706)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#fff', fontSize: '1.1rem',
-          boxShadow: '0 0 15px rgba(217,119,6,0.4)'
-        }}>
-          RM
-        </div>
+        <img 
+          src="https://cdn-icons-png.flaticon.com/512/738/738671.png" 
+          alt="Real Madrid Analytics" 
+          style={{
+            width: '42px', 
+            height: '42px', 
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 0 8px rgba(217, 119, 6, 0.5))'
+          }} 
+        />
         <div>
           <h1 style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             REAL MADRID <span style={{ color: 'var(--accent-gold)' }}>FINANCIAL INTELLIGENCE</span>
