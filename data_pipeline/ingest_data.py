@@ -1,7 +1,6 @@
 """
 Enriched Data Ingestion & Star Schema Populator with Advanced Financial Dimensions
 (Commercial Sub-segments, Capital Gains, Cash Flow Decomposition, Stress Testing, ESG & Femenino)
-Populates JSON files AND SQLite Star Schema Database (data/real_madrid_analytics.db).
 """
 import os
 import json
@@ -246,19 +245,4 @@ with open("data/stress_testing.json", "w") as f:
 with open("data/esg_femenino.json", "w") as f:
     json.dump(esg_femenino_data, f, indent=2)
 
-# Populate SQLite Database (data/real_madrid_analytics.db)
-conn = sqlite3.connect("data/real_madrid_analytics.db")
-for tbl in ["dim_date", "fact_financials", "fact_commercial_breakdown", "fact_capital_gains", "fact_cash_flow", "fact_stress_scenarios", "fact_esg_femenino"]:
-    conn.execute(f"DROP TABLE IF EXISTS {tbl}")
-
-pd.DataFrame(seasons_data).to_sql("dim_date", conn, index=False)
-pd.DataFrame(financials_data).to_sql("fact_financials", conn, index=False)
-pd.DataFrame(commercial_breakdown_data).to_sql("fact_commercial_breakdown", conn, index=False)
-pd.DataFrame(capital_gains_data).to_sql("fact_capital_gains", conn, index=False)
-pd.DataFrame(cash_flow_data).to_sql("fact_cash_flow", conn, index=False)
-pd.DataFrame(stress_testing_data["scenarios"]).to_sql("fact_stress_scenarios", conn, index=False)
-pd.DataFrame(esg_femenino_data["femenino_analytics"]).to_sql("fact_esg_femenino", conn, index=False)
-conn.commit()
-conn.close()
-
-print("[SUCCESS] Enhanced datasets & SQLite Database (data/real_madrid_analytics.db) populated successfully!")
+print("[SUCCESS] Enhanced datasets populated successfully!")

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "alert-1",
+    "type": "positive",
+    "title": "Bernab\u00e9u Revenue Expansion Peak",
+    "message": "Matchday + Commercial revenue grew +58.8% following the completion of full stadium expansion and 360-degree pitch retractability.",
+    "impact": "+\u20ac260M / year"
+  },
+  {
+    "id": "alert-2",
+    "type": "positive",
+    "title": "Net Debt Clearance Milestone",
+    "message": "Real Madrid transitioned into a Net Cash position (-\u20ac12M Net Debt) in 2024/25 despite \u20ac1.17B in Bernab\u00e9u debt borrowings.",
+    "impact": "Exemplary Solvency"
+  },
+  {
+    "id": "alert-3",
+    "type": "warning",
+    "title": "Wage Inflation Monitor",
+    "message": "First-team wages reached \u20ac540M in 2024/25. While safe at 45.6% wage ratio, contract renewals for key stars require active monitoring.",
+    "impact": "45.6% Wage-to-Revenue Ratio"
+  }
+]

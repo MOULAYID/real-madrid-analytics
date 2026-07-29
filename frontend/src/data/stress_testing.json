@@ -1,0 +1,43 @@
+{
+  "base_season": "2024/25",
+  "base_revenue": 1185.0,
+  "base_net_profit": 24.2,
+  "scenarios": [
+    {
+      "id": "ucl_winner",
+      "name": "Base Case: UCL Winner / Finalist",
+      "ucl_prize_money": 140.0,
+      "revenue_impact": 0.0,
+      "net_profit_impact": 0.0,
+      "result_profit": 24.2,
+      "status": "Target Baseline"
+    },
+    {
+      "id": "ucl_r16_exit",
+      "name": "Stress Scenario A: Early UCL Exit (Round of 16)",
+      "ucl_prize_money": 65.0,
+      "revenue_impact": -75.0,
+      "net_profit_impact": -55.0,
+      "result_profit": -30.8,
+      "status": "High Risk Warning"
+    },
+    {
+      "id": "wage_inflation_10pct",
+      "name": "Stress Scenario B: 10% External Wage Inflation",
+      "wage_cost_increase": 54.0,
+      "revenue_impact": 0.0,
+      "net_profit_impact": -54.0,
+      "result_profit": -29.8,
+      "status": "Medium Risk"
+    },
+    {
+      "id": "combined_shock",
+      "name": "Stress Scenario C: Combined Shock (Early Exit + Wage Shock)",
+      "ucl_prize_money": 65.0,
+      "revenue_impact": -75.0,
+      "net_profit_impact": -109.0,
+      "result_profit": -84.8,
+      "status": "Severe Shock Threshold"
+    }
+  ]
+}

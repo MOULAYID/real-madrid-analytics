@@ -1,126 +1,141 @@
 """
-Machine Learning Forecasting & Predictive Analytics Engine
-Uses Scikit-Learn (Ridge Regression) with stadium capacity / non-matchday event multipliers.
+Machine Learning Forecasting & Automated Financial Trend Detection Engine
+for Real Madrid Financial Intelligence Dashboard
 """
 import json
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression, Ridge
 
-def run_forecast():
+def run_forecast_and_trend_detection():
     with open("data/financials.json", "r") as f:
-        hist_data = json.load(f)
+        financials = json.load(f)
     
-    df_hist = pd.DataFrame(hist_data)
+    df = pd.DataFrame(financials)
     
-    # Feature Engineering
-    # Features: time_index (0..10), matchday_capacity_index, commercial_boost
-    X_train = []
-    y_revenue = []
-    y_costs = []
-    y_ebitda = []
-    y_net_profit = []
-    y_net_debt = []
-
-    for i, row in df_hist.iterrows():
-        # Bernabéu venue expansion began ramping in 2023/24 and 2024/25
-        stadium_factor = 1.0
-        if row['season'] == '2023/24':
-            stadium_factor = 1.2
-        elif row['season'] == '2024/25':
-            stadium_factor = 1.35
-            
-        X_train.append([i, stadium_factor])
-        y_revenue.append(row['revenue_total'])
-        y_costs.append(row['operating_costs'])
-        y_ebitda.append(row['ebitda'])
-        y_net_profit.append(row['net_profit'])
-        y_net_debt.append(row['net_debt'])
-
-    X_train = np.array(X_train)
-
-    # Train Ridge Regression Models
-    model_rev = Ridge(alpha=1.0).fit(X_train, y_revenue)
-    model_costs = Ridge(alpha=1.0).fit(X_train, y_costs)
-    model_ebitda = Ridge(alpha=1.0).fit(X_train, y_ebitda)
-    model_profit = Ridge(alpha=1.0).fit(X_train, y_net_profit)
-    model_debt = Ridge(alpha=1.0).fit(X_train, y_net_debt)
-
-    # Forecast Next 3 Seasons
+    # Feature Engineering: Year index
+    df['year_idx'] = np.arange(len(df))
+    
+    # Historical data (up to 2024/25)
+    X = df[['year_idx']].values
+    
+    # Models for Revenue, Costs, EBITDA, Profit, Cash, Wages
+    target_cols = ['revenue_total', 'commercial_revenue', 'broadcasting_revenue', 'matchday_revenue', 'operating_costs', 'wages', 'ebitda', 'net_profit', 'cash']
+    
     future_seasons = [
-        {"season": "2025/26", "time_index": 11, "stadium_factor": 1.45},
-        {"season": "2026/27", "time_index": 12, "stadium_factor": 1.50},
-        {"season": "2027/28", "time_index": 13, "stadium_factor": 1.55},
+        {"season": "2025/26", "year": 2026, "year_idx": len(df)},
+        {"season": "2026/27", "year": 2027, "year_idx": len(df) + 1},
+        {"season": "2027/28", "year": 2028, "year_idx": len(df) + 2}
     ]
-
-    forecast_records = []
-    # Add historical rows with explicit is_forecast=False
-    for row in hist_data:
-        r = dict(row)
-        r['is_forecast'] = False
-        forecast_records.append(r)
-
-    for fs in future_seasons:
-        X_pred = np.array([[fs['time_index'], fs['stadium_factor']]])
+    
+    X_future = np.array([[fs['year_idx']] for fs in future_seasons])
+    
+    forecast_results = []
+    
+    for fs, x_f in zip(future_seasons, X_future):
+        row = {"season": fs["season"], "year": fs["year"], "is_forecast": True}
         
-        pred_rev = round(float(model_rev.predict(X_pred)[0]), 1)
-        pred_cost = round(float(model_costs.predict(X_pred)[0]), 1)
-        pred_ebitda = round(float(model_ebitda.predict(X_pred)[0]), 1)
-        pred_profit = round(float(model_profit.predict(X_pred)[0]), 1)
-        pred_debt = round(float(model_debt.predict(X_pred)[0]), 1)
-
-        forecast_records.append({
-            "season": fs['season'],
-            "revenue_total": pred_rev,
-            "commercial_revenue": round(pred_rev * 0.48, 1),
-            "broadcasting_revenue": round(pred_rev * 0.26, 1),
-            "matchday_revenue": round(pred_rev * 0.26, 1),
-            "operating_costs": pred_cost,
-            "wages": round(pred_cost * 0.58, 1),
-            "player_amortization": round(pred_cost * 0.15, 1),
-            "ebitda": pred_ebitda,
-            "net_profit": pred_profit,
-            "cash": round(150.0 + (pred_profit * 2), 1),
-            "debt": round(1100.0 - (pred_profit * 5), 1),
-            "net_debt": pred_debt,
-            "assets": round(2000.0 + (pred_rev * 0.2), 1),
-            "liabilities": round(1050.0 - (pred_profit * 2), 1),
-            "financial_health_score": min(99, int(95 + (fs['time_index'] - 11))),
-            "is_forecast": True
-        })
-
+        for col in target_cols:
+            y = df[col].values
+            # Train Ridge model with slight regularization for smooth linear trend
+            model = Ridge(alpha=1.0)
+            model.fit(X, y)
+            
+            # Predict
+            pred = float(model.predict([x_f])[0])
+            
+            # Apply Bernabéu stadium expansion boost to matchday & commercial revenue in future years
+            if col == 'matchday_revenue':
+                pred += 35.0 * (x_f[0] - len(df) + 1)
+            elif col == 'commercial_revenue':
+                pred += 40.0 * (x_f[0] - len(df) + 1)
+            elif col == 'revenue_total':
+                pred += 75.0 * (x_f[0] - len(df) + 1)
+                
+            row[col] = round(max(0, pred), 1)
+            
+        # Computed fields
+        row['net_debt'] = round(float(-25.0 - (15.0 * (x_f[0] - len(df) + 1))), 1)
+        row['debt'] = round(float(1100.0 - (40.0 * (x_f[0] - len(df) + 1))), 1)
+        row['assets'] = round(float(2050.0 + (100.0 * (x_f[0] - len(df) + 1))), 1)
+        row['liabilities'] = 1150.0
+        row['player_amortization'] = 145.0
+        row['financial_health_score'] = int(min(99, 97 + (x_f[0] - len(df) + 1)))
+        
+        forecast_results.append(row)
+        
+    # Combine historical + forecast
+    full_financials = financials + forecast_results
+    
+    # Save combined output
     with open("data/financials_forecast.json", "w") as f:
-        json.dump(forecast_records, f, indent=2)
-
-    # 3. Generate Anomaly & Critical Risk Trend Alerts
-    trend_alerts = [
-        {
-            "id": "alert-1",
+        json.dump(full_financials, f, indent=2)
+        
+    with open("data/forecast_only.json", "w") as f:
+        json.dump(forecast_results, f, indent=2)
+        
+    # --- AUTOMATED TREND DETECTION ---
+    trends = []
+    
+    # 1. Revenue Acceleration
+    rev_2324 = df[df['season'] == '2023/24']['revenue_total'].values[0]
+    rev_2223 = df[df['season'] == '2022/23']['revenue_total'].values[0]
+    rev_growth = ((rev_2324 - rev_2223) / rev_2223) * 100
+    
+    if rev_growth > 15:
+        trends.append({
+            "id": "T01",
             "type": "positive",
-            "title": "Bernabéu Revenue Expansion Peak",
-            "message": "Matchday + Commercial revenue grew +58.8% following the completion of full stadium expansion and 360-degree pitch retractability.",
-            "impact": "+€260M / year"
-        },
-        {
-            "id": "alert-2",
-            "type": "positive",
-            "title": "Net Debt Clearance Milestone",
-            "message": "Real Madrid transitioned into a Net Cash position (-€12M Net Debt) in 2024/25 despite €1.17B in Bernabéu debt borrowings.",
-            "impact": "Exemplary Solvency"
-        },
-        {
-            "id": "alert-3",
-            "type": "warning",
-            "title": "Wage Inflation Monitor",
-            "message": "First-team wages reached €540M in 2024/25. While safe at 45.6% wage ratio, contract renewals for key stars require active monitoring.",
-            "impact": "45.6% Wage-to-Revenue Ratio"
-        }
-    ]
-
+            "category": "Revenue Acceleration",
+            "title": "Billion-Euro Milestone Reached",
+            "message": f"Revenue accelerated by {rev_growth:.1f}% in 2023/24 to €1.073B, driven by matchday venue reopening and commercial dominance.",
+            "impact": "High Positive",
+            "season": "2023/24"
+        })
+        
+    # 2. Bernabéu Commercial Expansion
+    comm_2425 = df[df['season'] == '2024/25']['commercial_revenue'].values[0]
+    comm_1920 = df[df['season'] == '2019/20']['commercial_revenue'].values[0]
+    comm_growth = ((comm_2425 - comm_1920) / comm_1920) * 100
+    trends.append({
+        "id": "T02",
+        "type": "positive",
+        "category": "Commercial Expansion",
+        "title": "Commercial Engine Leadership",
+        "message": f"Commercial revenue surged by {comm_growth:.1f}% since 2019/20, reaching €542M, proving Real Madrid's unmatched global sponsorship power.",
+        "impact": "High Positive",
+        "season": "2024/25"
+    })
+    
+    # 3. Wage Ratio Discipline
+    latest_wages = df.iloc[-1]['wages']
+    latest_rev = df.iloc[-1]['revenue_total']
+    wage_ratio = (latest_wages / latest_rev) * 100
+    trends.append({
+        "id": "T03",
+        "type": "warning" if wage_ratio > 60 else "positive",
+        "category": "Cost Discipline",
+        "title": "Strict Wage Control Under UEFA FFP",
+        "message": f"Wage-to-revenue ratio stands at an exemplary {wage_ratio:.1f}%, well below UEFA's recommended 70% threshold and European peers.",
+        "impact": "High Positive",
+        "season": "2024/25"
+    })
+    
+    # 4. Debt & Liquidity Trajectory
+    trends.append({
+        "id": "T04",
+        "type": "positive",
+        "category": "Balance Sheet Strength",
+        "title": "Net Debt Neutrality",
+        "message": "Real Madrid maintains a net cash position (excluding long-term stadium financing ring-fenced at fixed low interest rates).",
+        "impact": "Medium Positive",
+        "season": "2024/25"
+    })
+    
     with open("data/trend_alerts.json", "w") as f:
-        json.dump(trend_alerts, f, indent=2)
-
-    print("[SUCCESS] Machine learning forecasts & trend alerts regenerated successfully!")
+        json.dump(trends, f, indent=2)
+        
+    print("[SUCCESS] Forecasting and trend detection engine executed successfully!")
 
 if __name__ == "__main__":
-    run_forecast()
+    run_forecast_and_trend_detection()
