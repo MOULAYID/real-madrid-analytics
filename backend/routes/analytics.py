@@ -13,11 +13,14 @@ import pandas as pd
 
 router = APIRouter(prefix="/api", tags=["analytics"])
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+
 def load_json(filename: str):
-    path = os.path.join("data", filename)
+    path = os.path.join(DATA_DIR, filename)
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail=f"File {filename} not found")
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 @router.get("/overview")

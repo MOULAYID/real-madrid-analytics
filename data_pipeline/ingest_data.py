@@ -8,8 +8,9 @@ import sqlite3
 import pandas as pd
 import numpy as np
 
-os.makedirs("data", exist_ok=True)
-os.makedirs("data_pipeline", exist_ok=True)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+os.makedirs(DATA_DIR, exist_ok=True)
 
 # 1. Dim_Date
 seasons_data = [
@@ -227,22 +228,34 @@ esg_femenino_data = {
 }
 
 # Save enhanced JSON files
-with open("data/financials.json", "w") as f:
+with open(os.path.join(DATA_DIR, "financials.json"), "w", encoding="utf-8") as f:
     json.dump(financials_data, f, indent=2)
 
-with open("data/commercial_breakdown.json", "w") as f:
+with open(os.path.join(DATA_DIR, "commercial_breakdown.json"), "w", encoding="utf-8") as f:
     json.dump(commercial_breakdown_data, f, indent=2)
 
-with open("data/capital_gains.json", "w") as f:
+with open(os.path.join(DATA_DIR, "capital_gains.json"), "w", encoding="utf-8") as f:
     json.dump(capital_gains_data, f, indent=2)
 
-with open("data/cash_flow.json", "w") as f:
+with open(os.path.join(DATA_DIR, "cash_flow.json"), "w", encoding="utf-8") as f:
     json.dump(cash_flow_data, f, indent=2)
 
-with open("data/stress_testing.json", "w") as f:
+with open(os.path.join(DATA_DIR, "stress_testing.json"), "w", encoding="utf-8") as f:
     json.dump(stress_testing_data, f, indent=2)
 
-with open("data/esg_femenino.json", "w") as f:
+with open(os.path.join(DATA_DIR, "esg_femenino.json"), "w", encoding="utf-8") as f:
     json.dump(esg_femenino_data, f, indent=2)
 
-print("[SUCCESS] Enhanced datasets populated successfully!")
+# Populate SQLite Database
+db_path = os.path.join(DATA_DIR, "real_madrid_analytics.db")
+conn = sqlite3.connect(db_path)
+
+df_seasons = pd.DataFrame(seasons_data)
+df_seasons.to_sql("dim_financial_seasons", conn, if_exists="replace", index=False)
+
+df_fin = pd.DataFrame(financials_data)
+df_fin.to_sql("fact_financials", conn, if_exists="replace", index=False)
+
+conn.close()
+
+print("[SUCCESS] Enhanced datasets & SQLite Star Schema populated successfully!")

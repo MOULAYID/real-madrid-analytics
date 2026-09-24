@@ -1,14 +1,25 @@
-# Real Madrid Financial Intelligence Dashboard
+# Real Madrid Financial Intelligence & Strategic Analytics Platform
 
-A professional-grade interactive sports finance analytics system built for executives, sports investors, and football finance analysts. The dashboard evaluates Real Madrid CF's financial transformation, revenue engines, cost efficiency, squad investment ROI, Bernabéu renovation business impact, downside stress testing, cash flow decomposition, and European elite club benchmarking across 10+ seasons (2014/15 – 2024/25) with 3-season ML forecasts.
+A professional-grade, 100% Pure Python interactive sports finance analytics system built for executives, sports investors, and football finance analysts. The dashboard evaluates Real Madrid CF's financial transformation, revenue engines, cost efficiency, squad investment ROI, Santiago Bernabéu renovation business impact, downside stress testing, 3-statement cash flow decomposition, and European elite club benchmarking across 10+ seasons (2014/15 – 2024/25) with 3-season ML forecasts.
 
 ---
 
-## 🌟 Key Features
+## 🏗️ Pure Python Tech Stack
+
+- **Dashboard UI**: [Streamlit](https://streamlit.io/) (100% Python interactive web framework)
+- **Visualizations**: [Plotly Express & Graph Objects](https://plotly.com/python/) (Stacked Area, P&L Waterfall, Scatter Plots, Indicators, Dual-Axis Charts)
+- **REST API & Export Engine**: [FastAPI](https://fastapi.tiangolo.com/) + [Uvicorn](https://www.uvicorn.org/)
+- **Data Engineering & ML**: [Pandas](https://pandas.pydata.org/), [NumPy](https://numpy.org/), [Scikit-Learn](https://scikit-learn.org/) (Ridge Time-Series Regression)
+- **Database**: SQLite3 (Star Schema Data Warehouse)
+- **Automated Testing**: [pytest](https://docs.pytest.org/)
+
+---
+
+## 🌟 Key Features & Pages
 
 1. **Page 1: Executive Financial Overview**
    - 8 KPI cards (Revenue, YoY growth %, EBITDA, Net profit, Cash, Net Debt, Wage/Rev %, Squad Market Value).
-   - Financial Strength Index (0-100 gauge).
+   - Financial Health Index breakdown (0-100 score).
    - **3-Statement Cash Flow Decomposition** (Operating, Investing, Financing cash flows).
 
 2. **Page 2: Revenue Engine**
@@ -25,7 +36,7 @@ A professional-grade interactive sports finance analytics system built for execu
 
 5. **Page 5: Sporting Success vs Financial Power**
    - Revenue & Wage bill vs Trophies won per season.
-   - Football ROI Score formula calculator ($(\text{Success Points}) / (\text{Financial Investment})$).
+   - Football ROI Score formula calculator ($\text{Success Points} / \text{Financial Investment}$).
 
 6. **Page 6: Santiago Bernabéu & Risk**
    - Interactive scenario simulator (Conservative, Base, Optimistic).
@@ -43,16 +54,75 @@ A professional-grade interactive sports finance analytics system built for execu
 
 ## 🚀 Quick Start Guide
 
-### Start Backend & Pipeline
+### 1. Installation
+
+Install Python dependencies:
 ```bash
-python data_pipeline/ingest_data.py
-python data_pipeline/forecasting.py
-python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
+pip install -r requirements.txt
 ```
 
-### Start Frontend Dashboard
+### 2. Run Data Pipeline & Launch App
+
+Run the master launcher script to execute ETL ingestion, ML forecasting, and start both the REST API and Streamlit dashboard:
+
 ```bash
-cd frontend
-npm run dev
+python run_app.py
 ```
-Open browser at `http://localhost:5173`.
+
+Access the Streamlit Dashboard at `http://localhost:8501`.
+Access the FastAPI Documentation at `http://localhost:8000/docs`.
+
+### 3. Individual Execution Commands
+
+- **Run Data Pipeline Only**:
+  ```bash
+  python run_app.py --pipeline
+  ```
+
+- **Run FastAPI Backend Server Only**:
+  ```bash
+  python run_app.py --backend
+  ```
+
+- **Run Streamlit Dashboard Only**:
+  ```bash
+  python run_app.py --dashboard
+  ```
+
+### 4. Run Automated Tests
+
+Execute the complete pytest suite:
+```bash
+pytest tests/ -v
+```
+
+---
+
+## 📁 Repository Structure
+
+```
+real-madrid-analytics/
+├── backend/                  # FastAPI REST API Backend
+│   ├── main.py
+│   └── routes/
+│       └── analytics.py
+├── dashboard/                # Streamlit Pure Python Executive Dashboard
+│   ├── app.py                # Main application entry point
+│   ├── components/           # Reusable UI components (header, kpi_card)
+│   ├── pages/                # 8 Interactive analytics dashboard pages
+│   └── utils/                # API client data fetcher & custom CSS design system
+├── data/                     # SQLite database & exported JSON dataset warehouse
+├── data_pipeline/            # ETL pipeline and ML forecasting scripts
+│   ├── ingest_data.py
+│   ├── forecasting.py
+│   └── star_schema.sql
+├── tests/                    # Automated pytest test suite
+│   ├── test_api.py
+│   ├── test_pipeline.py
+│   └── test_dashboard.py
+├── notebooks/                # Financial intelligence exploratory Jupyter notebook
+├── requirements.txt          # Python dependencies
+├── pytest.ini                # Pytest configuration
+├── run_app.py                # Master CLI application launcher
+└── README.md
+```
