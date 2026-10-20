@@ -53,7 +53,7 @@ def render_executive_overview(data: dict, cash_flow_data: list, show_forecast: b
             tooltip="Liquid cash balance available at year-end"
         )
 
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    st.html("<div style='height: 10px;'></div>")
     c5, c6, c7, c8 = st.columns(4)
     with c5:
         render_kpi_card(
@@ -91,7 +91,7 @@ def render_executive_overview(data: dict, cash_flow_data: list, show_forecast: b
     col_left, col_right = st.columns([1, 2])
     
     with col_left:
-        st.markdown(f"""
+        st.html(f"""
         <div style="background: #111827; border: 1px solid #1F2937; border-radius: 10px; padding: 1.25rem; height: 100%;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <span style="font-weight: 700; color: #F3F4F6;">🛡️ Financial Strength Score</span>
@@ -144,7 +144,7 @@ def render_executive_overview(data: dict, cash_flow_data: list, show_forecast: b
                 <strong style="color: #10B981;">Executive Verdict:</strong> Real Madrid demonstrates elite financial resilience with low net debt, zero cash-flow risk, and industry-leading revenue generation exceeding €1B.
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     with col_right:
         df_rev = pd.DataFrame(revenue_trend)
