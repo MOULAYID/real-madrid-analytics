@@ -5,8 +5,8 @@ FastAPI Analytics Router for Real Madrid Financial Intelligence Dashboard
 import os
 import json
 import sqlite3
-from typing import Optional
-from fastapi import APIRouter, HTTPException, Query
+from typing import Optional, Literal
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
 import io
 import pandas as pd
@@ -253,7 +253,7 @@ def get_trend_alerts():
     return load_json("trend_alerts.json")
 
 @router.get("/export/{dataset}")
-def export_dataset(dataset: str, format: str = Query("json", enum=["json", "csv"])):
+def export_dataset(dataset: str, format: Literal["json", "csv"] = "json"):
     valid_files = {
         "financials": "financials_forecast.json",
         "transfers": "transfers.json",
