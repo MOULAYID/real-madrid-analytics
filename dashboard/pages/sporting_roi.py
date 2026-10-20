@@ -39,14 +39,14 @@ def render_sporting_roi(data: dict):
             tooltip="Includes 5 Champions League titles, 4 La Liga titles, Copa del Rey, Club World Cups"
         )
     with c3:
-        st.markdown(f"""
+        st.html(f"""
         <div style="background: #111827; border: 1px solid #1F2937; border-left: 4px solid #F59E0B; border-radius: 10px; padding: 1rem 1.25rem; height: 100%;">
             <div style="font-size: 0.75rem; font-weight: 600; color: #9CA3AF;">EXECUTIVE STRATEGIC SUMMARY</div>
             <p style="font-size: 0.82rem; color: #F3F4F6; margin-top: 0.4rem; line-height: 1.4;">
                 {summary_text}
             </p>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     st.markdown("---")
 
