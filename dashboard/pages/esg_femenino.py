@@ -24,7 +24,7 @@ def render_esg_femenino(data: dict):
     with c3:
         render_kpi_card("Annual Solar Generation", esg.get("annual_solar_generation_gwh", 3.2), prefix="", suffix=" GWh", tooltip="On-site rooftop solar panel energy generation")
 
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    st.html("<div style='height: 10px;'></div>")
     c4, c5, c6 = st.columns(3)
     with c4:
         render_kpi_card("Water Recycling Efficiency", esg.get("water_recycling_efficiency_pct", 88.0), prefix="", suffix="%", tooltip="Closed-loop rainwater harvesting and pitch irrigation system")
