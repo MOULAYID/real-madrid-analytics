@@ -73,7 +73,7 @@ def render_sporting_roi(data: dict):
         ))
         fig1.update_layout(
             title="Revenue vs Trophies Won per Season",
-            yaxis=dict(title="Revenue (€M)"),
+            yaxis_title="Revenue (€M)",
             yaxis2=dict(title="Trophies", overlaying="y", side="right", range=[0, 6]),
             **PLOTLY_LAYOUT_TEMPLATE,
             height=340
@@ -99,7 +99,7 @@ def render_sporting_roi(data: dict):
         ))
         fig2.update_layout(
             title="Wages vs Football ROI Score Efficiency",
-            yaxis=dict(title="Wage Bill (€M)"),
+            yaxis_title="Wage Bill (€M)",
             yaxis2=dict(title="ROI Score", overlaying="y", side="right"),
             **PLOTLY_LAYOUT_TEMPLATE,
             height=340
