@@ -1,6 +1,7 @@
 """
 Reusable KPI Card Renderer Component for Streamlit Dashboard.
 """
+from html import escape
 import streamlit as st
 
 def render_kpi_card(
@@ -28,18 +29,18 @@ def render_kpi_card(
     if change is not None:
         sign = "+" if change > 0 else ""
         change_class = "kpi-change-positive" if change >= 0 else "kpi-change-negative"
-        change_html = f'<span class="{change_class}">{sign}{change}% {change_label}</span>'
+        change_html = f'<span class="{change_class}">{sign}{change}% {escape(change_label)}</span>'
         
-    tooltip_html = f'<div class="kpi-tooltip">{tooltip}</div>' if tooltip else ""
+    tooltip_html = f'<div class="kpi-tooltip">{escape(tooltip)}</div>' if tooltip else ""
 
     card_html = f"""
     <div class="{card_class}">
-        <div class="kpi-title">{title}</div>
+        <div class="kpi-title">{escape(title)}</div>
         <div class="kpi-value-container">
-            <span class="kpi-value">{formatted_val}</span>
+            <span class="kpi-value">{escape(formatted_val)}</span>
             {change_html}
         </div>
         {tooltip_html}
     </div>
     """
-    st.markdown(card_html, unsafe_allow_html=True)
+    st.html(card_html)
