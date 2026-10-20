@@ -12,7 +12,7 @@ SEASONS = [
 
 def render_header():
     """Renders the executive header and global control widgets in sidebar."""
-    st.markdown("""
+    st.html("""
     <div class="rm-header">
         <div class="rm-title-group">
             <span style="font-size: 2.2rem;">👑</span>
@@ -26,7 +26,7 @@ def render_header():
             <span class="badge badge-blue">ML 3-Yr Forecast</span>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     # Global Controls in Sidebar
     st.sidebar.markdown("### ⚙️ Executive Controls")
@@ -66,7 +66,7 @@ def render_header():
         for alert in trends:
             severity_badge = "badge-red" if alert.get("severity") == "high" else "badge-gold" if alert.get("severity") == "medium" else "badge-blue"
             with st.sidebar.expander(f"{alert.get('title', 'Alert')}"):
-                st.markdown(f"<span class='badge {severity_badge}'>{alert.get('severity', 'info').upper()}</span>", unsafe_allow_html=True)
+                st.html(f"<span class='badge {severity_badge}'>{alert.get('severity', 'info').upper()}</span>")
                 st.markdown(f"**Metric:** `{alert.get('metric', '')}`")
                 st.markdown(f"**Observation:** {alert.get('description', '')}")
                 st.markdown(f"**Strategic Impact:** {alert.get('impact', '')}")
