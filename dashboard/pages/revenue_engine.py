@@ -26,7 +26,7 @@ def render_revenue_engine(data: dict, show_forecast: bool):
     st.markdown("### 💰 Revenue Engine Performance")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.markdown(f"""
+        st.html(f"""
         <div style="background: #111827; border: 1px solid #1F2937; border-left: 4px solid #F59E0B; border-radius: 10px; padding: 1rem 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; color: #9CA3AF; font-size: 0.75rem; font-weight: 600;">
                 <span>COMMERCIAL REVENUE</span>
@@ -35,10 +35,10 @@ def render_revenue_engine(data: dict, show_forecast: bool):
             <div style="font-size: 1.6rem; font-weight: 800; color: #F9FAFB; margin: 0.4rem 0;">€{latest['commercial']}M</div>
             <div style="font-size: 0.75rem; color: #F59E0B; font-weight: 600;">{latest['commercial_pct']}% of total revenue</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     with c2:
-        st.markdown(f"""
+        st.html(f"""
         <div style="background: #111827; border: 1px solid #1F2937; border-left: 4px solid #3B82F6; border-radius: 10px; padding: 1rem 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; color: #9CA3AF; font-size: 0.75rem; font-weight: 600;">
                 <span>BROADCASTING REVENUE</span>
@@ -47,10 +47,10 @@ def render_revenue_engine(data: dict, show_forecast: bool):
             <div style="font-size: 1.6rem; font-weight: 800; color: #F9FAFB; margin: 0.4rem 0;">€{latest['broadcasting']}M</div>
             <div style="font-size: 0.75rem; color: #3B82F6; font-weight: 600;">{latest['broadcasting_pct']}% of total revenue</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     with c3:
-        st.markdown(f"""
+        st.html(f"""
         <div style="background: #111827; border: 1px solid #1F2937; border-left: 4px solid #10B981; border-radius: 10px; padding: 1rem 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; color: #9CA3AF; font-size: 0.75rem; font-weight: 600;">
                 <span>MATCHDAY & STADIUM REVENUE</span>
@@ -59,11 +59,11 @@ def render_revenue_engine(data: dict, show_forecast: bool):
             <div style="font-size: 1.6rem; font-weight: 800; color: #F9FAFB; margin: 0.4rem 0;">€{latest['matchday']}M</div>
             <div style="font-size: 0.75rem; color: #10B981; font-weight: 600;">{latest['matchday_pct']}% of total revenue (Bernabéu Boost)</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     # 2. Automated AI Insights Banner
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-    st.markdown(f"""
+    st.html("<div style='height: 10px;'></div>")
+    st.html(f"""
     <div class="insights-banner">
         <div style="display: flex; align-items: center; gap: 0.5rem; color: #F59E0B; font-weight: 700; margin-bottom: 0.5rem;">
             <span>✨ AUTOMATED REVENUE ENGINE INSIGHTS</span>
@@ -72,7 +72,7 @@ def render_revenue_engine(data: dict, show_forecast: bool):
             {"".join([f"<li>{ins}</li>" for ins in insights])}
         </ul>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     # 3. Granular Commercial Revenue Sub-Breakdown Section
     if latest_comm:
