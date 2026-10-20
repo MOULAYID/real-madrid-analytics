@@ -81,6 +81,14 @@ try {
   }
   await fs.writeFile(evidence + '/report.json', JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report, null, 2));
+ } catch (error) {
+  let index = 0;
+  for (const context of browser.contexts()) for (const page of context.pages()) {
+    await page.screenshot({ path: evidence + '/failure-' + index + '.png', fullPage: true }).catch(() => {});
+    await fs.writeFile(evidence + '/failure-' + index + '.html', await page.content()).catch(() => {});
+    index++;
+  }
+  throw error;
 } finally {
   await browser.close();
 }
