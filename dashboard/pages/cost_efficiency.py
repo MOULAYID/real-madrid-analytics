@@ -47,7 +47,7 @@ def render_cost_efficiency(data: dict):
             tooltip="Points accumulated per €1M of net transfer spending"
         )
     with c4:
-        st.markdown("""
+        st.html("""
         <div style="background: #111827; border: 1px solid #1F2937; border-left: 4px solid #10B981; border-radius: 10px; padding: 1rem 1.25rem; height: 100%;">
             <div style="font-size: 0.75rem; font-weight: 600; color: #9CA3AF;">UEFA FFP STATUS</div>
             <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; font-weight: 700; font-size: 1.1rem; color: #10B981;">
@@ -57,7 +57,7 @@ def render_cost_efficiency(data: dict):
                 24.5% below UEFA's 70% threshold limit
             </p>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     st.markdown("---")
 
