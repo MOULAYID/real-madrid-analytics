@@ -126,3 +126,20 @@ real-madrid-analytics/
 ├── run_app.py                # Master CLI application launcher
 └── README.md
 ```
+
+## Rendering and public dashboard
+
+Custom HTML cards use Streamlit's HTML renderer, avoiding Markdown indentation turning tags into visible code. The app defaults to its dark theme through `.streamlit/config.toml`.
+
+The public dashboard uses a bundled snapshot exported from the same Python analytics routes as the API. It does not require an API running on the visitor's computer. The existing React bundle is retained because its frontend source is not present in this repository; `docs/static-data.js` adapts only that bundle's legacy analytics and CSV-export requests.
+
+Build the portable public version:
+
+```bash
+python scripts/build_static_dashboard.py
+python -m http.server 8080 --directory docs
+```
+
+Open `http://localhost:8080`. Rebuild the snapshot after changing the data or analytics routes. The snapshot includes historical data and modelled values already present in the project; this change does not verify their real-world accuracy.
+
+The publishing workflow runs Python tests and browser checks before deploying. Browser checks cover all eight tabs, season selection, CSV export, raw-HTML leakage, and desktop/mobile overflow in the public and Streamlit dashboards. Review screenshots are published under `previews/` after a successful build.
