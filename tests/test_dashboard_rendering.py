@@ -1,12 +1,13 @@
 """Regression checks for dashboard rendering and portable data fidelity."""
 import csv
+from pathlib import Path
 from fastapi.testclient import TestClient
 from streamlit.testing.v1 import AppTest
 from backend.main import app
 from scripts.build_static_dashboard import build
 
 def test_dashboard_renders_without_exceptions():
-    dashboard = AppTest.from_file("dashboard/app.py").run(timeout=60)
+    dashboard = AppTest.from_file(Path(__file__).resolve().parents[1] / "dashboard" / "app.py").run(timeout=60)
     assert not dashboard.exception
     assert len(dashboard.tabs) == 8
     assert dashboard.selectbox[0].value == "2024/25"
