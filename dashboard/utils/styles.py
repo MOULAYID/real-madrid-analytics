@@ -15,7 +15,7 @@ def apply_custom_styles():
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     
-    .main {
+    .main, .stApp, [data-testid="stAppViewContainer"] {
         background-color: #0B0F19;
         color: #F3F4F6;
     }
@@ -98,6 +98,7 @@ def apply_custom_styles():
     .kpi-value-container {
         display: flex;
         align-items: baseline;
+        flex-wrap: wrap;
         gap: 0.5rem;
     }
     
@@ -121,7 +122,7 @@ def apply_custom_styles():
     
     .kpi-tooltip {
         font-size: 0.72rem;
-        color: #6B7280;
+        color: #94A3B8;
         margin-top: 0.35rem;
         line-height: 1.3;
     }
@@ -203,9 +204,16 @@ def apply_custom_styles():
         color: #F59E0B !important;
         border: 1px solid #374151;
     }
+    @media (max-width: 768px) {
+        .rm-header { flex-wrap: wrap; gap: 1rem; padding: 1rem; }
+        .rm-title-group { min-width: 0; }
+        .rm-title { font-size: 1.35rem; }
+        .rm-subtitle { overflow-wrap: anywhere; }
+        .block-container { max-width: 100%; padding-left: 1rem; padding-right: 1rem; }
+    }
     </style>
     """
-    st.markdown(custom_css, unsafe_allow_html=True)
+    st.html(custom_css)
 
 # Color Palette Constants for Plotly
 COLOR_GOLD = "#F59E0B"
