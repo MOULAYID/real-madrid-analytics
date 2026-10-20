@@ -29,7 +29,7 @@ def render_bernabeu_impact(stadium_data: dict, stress_data: dict):
     current_scenario = next((sc for sc in scenarios if sc["name"] == selected_sc_name), scenarios[1])
 
     # 2. Master Metrics KPI Cards Grid
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    st.html("<div style='height: 10px;'></div>")
     c1, c2, c3, c4, c5, c6 = st.columns(6)
     with c1:
         render_kpi_card("Total Capex", investment_total, tooltip="Total renovation capex under long-term loan")
@@ -71,7 +71,7 @@ def render_bernabeu_impact(stadium_data: dict, stress_data: dict):
         st.plotly_chart(fig_pie, use_container_width=True)
 
     with col_right:
-        st.markdown(f"""
+        st.html(f"""
         <div style="display: flex; flex-direction: column; gap: 1rem; justify-content: center; height: 100%;">
             <div style="padding: 1rem; background: #111827; border: 1px solid #1F2937; border-left: 4px solid #F59E0B; border-radius: 8px;">
                 <div style="font-weight: 700; color: #F59E0B; margin-bottom: 0.25rem;">
@@ -91,7 +91,7 @@ def render_bernabeu_impact(stadium_data: dict, stress_data: dict):
                 </p>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     # 4. Downside Risk & Stress Testing Simulator
     if stress_data and "scenarios" in stress_data:
